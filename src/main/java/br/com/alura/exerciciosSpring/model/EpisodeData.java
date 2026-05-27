@@ -4,8 +4,20 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 import br.com.alura.exerciciosSpring.dto.EpisodeDto;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "episodes")
 public class EpisodeData {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	private String title;
     private Integer episode;
@@ -13,27 +25,32 @@ public class EpisodeData {
     private LocalDate released;
     private Integer season;
     
-	public EpisodeData(EpisodeDto dto, Integer season) {
+    @ManyToOne
+    private SerieData serie;
+    
+    public EpisodeData() {}
+    
+	public EpisodeData(EpisodeDto episodeDto, Integer season) {
 		
 		this.season = season;
-		this.title = dto.titleEp();
+		this.title = episodeDto.titleEp();
 		
 		try {
-			this.episode = Integer.valueOf(dto.numEp());
+			this.episode = Integer.valueOf(episodeDto.numEp());
 		}
 		catch(NumberFormatException e){
 			this.episode = null;
 		}
 		
 		try {
-			this.rating = Double.valueOf(dto.ratingEp());
+			this.rating = Double.valueOf(episodeDto.ratingEp());
 		}
 		catch(NumberFormatException e){
 			this.rating = 0.0;
 		}
 		
 		try {
-			this.released = LocalDate.parse(dto.releasedEp());
+			this.released = LocalDate.parse(episodeDto.releasedEp());
 		}
 		catch(DateTimeParseException e){
 			this.rating = null;
@@ -42,6 +59,16 @@ public class EpisodeData {
 		
 		
 	}
+	public Long getId() {
+		return id;
+	}
+	public SerieData getSerie() {
+		return serie;
+	}
+	public void setSerie(SerieData serie) {
+		this.serie = serie;
+	}
+
 	public String getTitle() {
 		return title;
 	}
