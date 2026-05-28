@@ -63,6 +63,7 @@ public class Main {
 				5 - Buscar série pelo ator
 				6 - Buscar série pela avaliação
 				7 - Buscar série pela categoria
+				8 - Buscar séries curtas e bem avaliadas(Para maratonar no fim de semana)
 				
 				0 - Sair
 				
@@ -94,6 +95,9 @@ public class Main {
 				break;
 			case 7:
 				findByGenre();
+				break;
+			case 8:
+				shorterTopSeries();
 				break;
 			case 0:
 				System.out.println("Saindo...");
@@ -213,6 +217,11 @@ public class Main {
 		seriesSearched = repository.findByGenre(category);
 		System.out.println("Séries da categoria " + genre + ":");
 		seriesSearched.forEach(System.out::println);
-		
+	}
+	
+	private void shorterTopSeries() {
+		seriesSearched = repository.findShorterTopSeries();
+		System.out.println("Séries para maratonar no fim de semana: ");
+		seriesSearched.forEach(System.out::println);
 	}
 }
