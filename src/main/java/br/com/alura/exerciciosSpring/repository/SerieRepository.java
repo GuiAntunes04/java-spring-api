@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import br.com.alura.exerciciosSpring.model.Category;
+import br.com.alura.exerciciosSpring.model.EpisodeData;
 import br.com.alura.exerciciosSpring.model.SerieData;
 
 public interface SerieRepository extends JpaRepository<SerieData, Long>{
@@ -21,5 +22,15 @@ public interface SerieRepository extends JpaRepository<SerieData, Long>{
 			ORDER BY s.totalSeasons, s.rating DESC LIMIT 10
 		""")
 	List<SerieData> findShorterTopSeries();
+	
+	@Query("""
+			SELECT e 
+			FROM SerieData s
+			JOIN  s.episodes e
+			WHERE s = :seriesFounded
+			ORDER BY e.rating DESC
+			LIMIT 5
+		""")
+	List<EpisodeData> findTopEpBySeries(SerieData seriesFounded);
 	
 }

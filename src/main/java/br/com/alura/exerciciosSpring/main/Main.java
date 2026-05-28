@@ -30,8 +30,10 @@ public class Main {
 	private GetApi requestApi = new GetApi();
 	private ConvertData converter = new ConvertData();
 	private List<EpisodeData> episode = new ArrayList<>();
+	private List<EpisodeData> episodesSearched = new ArrayList<>();
 	private List<SerieData> listSeries = new ArrayList<>();
-	private List<SerieData> seriesSearched = new ArrayList<>();;
+	private List<SerieData> seriesSearched = new ArrayList<>();
+	private Optional<SerieData> seriesFounded;
 	private SeasonData seasonData;
 	private SerieData serie;
 	private SerieDto toSeries;
@@ -64,6 +66,7 @@ public class Main {
 				6 - Buscar série pela avaliação
 				7 - Buscar série pela categoria
 				8 - Buscar séries curtas e bem avaliadas(Para maratonar no fim de semana)
+				9 - Top episódios de uma série
 				
 				0 - Sair
 				
@@ -98,6 +101,9 @@ public class Main {
 				break;
 			case 8:
 				shorterTopSeries();
+				break;
+			case 9:
+				topEpBySeries();
 				break;
 			case 0:
 				System.out.println("Saindo...");
@@ -171,10 +177,10 @@ public class Main {
 	private void findByTitles() {
 		System.out.print("\nDigite uma série presente no catálogo: ");
 		serieName = sc.nextLine();
-		Optional<SerieData>seriesSearched = repository.findByTitleContainingIgnoreCase(serieName);
+		seriesFounded = repository.findByTitleContainingIgnoreCase(serieName);
 		
-		if (seriesSearched.isPresent()) {
-			 System.out.println("Dados da série: " + seriesSearched.get());
+		if (seriesFounded.isPresent()) {
+			 System.out.println("Dados da série: " + seriesFounded.get());
 		}
 		else {
 			System.out.println("Série não encontrada!");
@@ -223,5 +229,17 @@ public class Main {
 		seriesSearched = repository.findShorterTopSeries();
 		System.out.println("Séries para maratonar no fim de semana: ");
 		seriesSearched.forEach(System.out::println);
+	}
+	
+	private void topEpBySeries() {
+		findByTitles();
+		if(seriesFounded.isPresent()) {
+			episodesSearched = repository.findTopEpBySeries(seriesFounded.get());
+			System.out.printf("Top 5 episódios de %s\n", seriesFounded.get().getTitle());
+			episodesSearched.forEach(e -> 
+					System.out.printf("Temporada %s - Episódio %s - %s - Avaliação %s\n", 
+							e.getSeason(), e.getEpisode(), e.getTitle(), e.getRating()));
+		}
+		
 	}
 }
