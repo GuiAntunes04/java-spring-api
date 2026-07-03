@@ -8,9 +8,9 @@ const fichaDescricao = document.getElementById('ficha-descricao');
 
 // Função para carregar temporadas
 function carregarTemporadas() {
-    getDados(`/series/${serieId}/temporadas/todas`)
+    getDados(`/series/${serieId}/seasons/all`)
         .then(data => {
-            const temporadasUnicas = [...new Set(data.map(temporada => temporada.temporada))];
+            const temporadasUnicas = [...new Set(data.map(season => season.season))];
             listaTemporadas.innerHTML = ''; // Limpa as opções existentes
 
             const optionDefault = document.createElement('option');
@@ -18,10 +18,10 @@ function carregarTemporadas() {
             optionDefault.textContent = 'Selecione a temporada'
             listaTemporadas.appendChild(optionDefault); 
            
-            temporadasUnicas.forEach(temporada => {
+            temporadasUnicas.forEach(season => {
                 const option = document.createElement('option');
-                option.value = temporada;
-                option.textContent = temporada;
+                option.value = season;
+                option.textContent = season;
                 listaTemporadas.appendChild(option);
             });
 
@@ -37,26 +37,26 @@ function carregarTemporadas() {
 
 // Função para carregar episódios de uma temporada
 function carregarEpisodios() {
-    getDados(`/series/${serieId}/temporadas/${listaTemporadas.value}`)
+    getDados(`/series/${serieId}/seasons/${listaTemporadas.value}`)
         .then(data => {
-            const temporadasUnicas = [...new Set(data.map(temporada => temporada.temporada))];
+            const temporadasUnicas = [...new Set(data.map(season => season.season))];
             fichaSerie.innerHTML = ''; 
-            temporadasUnicas.forEach(temporada => {
+            temporadasUnicas.forEach(season => {
                 const ul = document.createElement('ul');
                 ul.className = 'episodios-lista';
 
-                const episodiosTemporadaAtual = data.filter(serie => serie.temporada === temporada);
+                const episodiosTemporadaAtual = data.filter(serie => serie.season === season);
 
                 const listaHTML = episodiosTemporadaAtual.map(serie => `
                     <li>
-                        ${serie.numeroEpisodio} - ${serie.title}
+                        ${serie.episode} - ${serie.title}
                     </li>
                 `).join('');
                 ul.innerHTML = listaHTML;
                 
                 const paragrafo = document.createElement('p');
                 const linha = document.createElement('br');
-                paragrafo.textContent = `Temporada ${temporada}`;
+                paragrafo.textContent = `Temporada ${season}`;
                 fichaSerie.appendChild(paragrafo);
                 fichaSerie.appendChild(linha);
                 fichaSerie.appendChild(ul);

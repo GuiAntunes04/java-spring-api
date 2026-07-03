@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.alura.exerciciosSpring.dto.EpisodeResponseDTO;
 import br.com.alura.exerciciosSpring.dto.SerieResponseDTO;
 import br.com.alura.exerciciosSpring.model.SerieData;
 import br.com.alura.exerciciosSpring.repository.SerieRepository;
@@ -27,7 +28,7 @@ public class SerieService {
 	}
 
 	public List<SerieResponseDTO> getNewReleases() {
-		return convertData(repository.findTop5ByOrderByEpisodesReleasedDesc());
+		return convertData(repository.newReleases());
 	}
 	
 	private List<SerieResponseDTO> convertData(List<SerieData> series){
@@ -44,6 +45,25 @@ public class SerieService {
 			return new SerieResponseDTO(s.getId(), s.getTitle(),s.getTotalSeasons(),s.getRating(), s.getGenre(), s.getActors(), s.getPoster(), s.getPlot());
 		}
 		return null;
+	}
+
+	public List<EpisodeResponseDTO> getAllSeasons(Long id) {
+		Optional<SerieData> serie = repository.findById(id);
+		
+		if (serie.isPresent()){
+			SerieData s = serie.get();
+			return s.getEpisodes().stream()
+					.map(e -> new EpisodeResponseDTO(e.getSeason(), e.getEpisode(), e.getTitle()))
+					.collect(Collectors.toList());
+		}
+		return null;
+	}
+
+	public List<EpisodeResponseDTO> getSeasonsByNumber(Long id, Long number) {
+		return repository.getEpisodesBySeason(id, number)
+				.stream()
+				.map(e -> new EpisodeResponseDTO(e.getSeason(), e.getEpisode(), e.getTitle()))
+				.collect(Collectors.toList());
 	}
 
 }

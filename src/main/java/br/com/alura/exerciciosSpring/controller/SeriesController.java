@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.alura.exerciciosSpring.dto.EpisodeResponseDTO;
 import br.com.alura.exerciciosSpring.dto.SerieResponseDTO;
 import br.com.alura.exerciciosSpring.service.SerieService;
 
@@ -36,6 +37,16 @@ public class SeriesController {
 	@GetMapping("/{id}")
 	public SerieResponseDTO getById(@PathVariable Long id) {
 		return service.getById(id);
+	}
+	
+	@GetMapping("/{id}/seasons/all")
+	public List<EpisodeResponseDTO> getAllSeasons(@PathVariable Long id) {
+		return service.getAllSeasons(id);
+	}
+	
+	@GetMapping("/{id}/seasons/{number}")
+	public List<EpisodeResponseDTO> getSeasonsByNumber(@PathVariable Long id, @PathVariable Long number) {
+		return service.getSeasonsByNumber(id, number);
 	}
 	
 }
