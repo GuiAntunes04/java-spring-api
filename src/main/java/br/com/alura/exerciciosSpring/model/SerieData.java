@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
 
-import br.com.alura.exerciciosSpring.dto.SerieDto;
+import br.com.alura.exerciciosSpring.dto.SerieOmdbDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,7 +48,7 @@ public class SerieData {
 	
 	public SerieData() {}
 	
-	public SerieData(SerieDto serieDto) throws IOException, InterruptedException {
+	public SerieData(SerieOmdbDto serieDto) throws IOException, InterruptedException {
 		this.title = serieDto.title();
 		this.totalSeasons = serieDto.totalSeasons();
 		this.rating = OptionalDouble.of(Double.valueOf(serieDto.rating())).orElse(0);

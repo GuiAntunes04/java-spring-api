@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import br.com.alura.exerciciosSpring.dto.SerieDto;
+import br.com.alura.exerciciosSpring.dto.SerieOmdbDto;
 import br.com.alura.exerciciosSpring.model.Category;
 import br.com.alura.exerciciosSpring.model.EpisodeData;
 import br.com.alura.exerciciosSpring.model.SeasonData;
@@ -36,7 +36,7 @@ public class Main {
 	private Optional<SerieData> seriesFounded;
 	private SeasonData seasonData;
 	private SerieData serie;
-	private SerieDto toSeries;
+	private SerieOmdbDto toSeries;
 	private String serieName;
 	private String actorName;
 	private Double rating;
@@ -126,12 +126,12 @@ public class Main {
         System.out.println(serie);
     }
 
-    private SerieDto getSerieData() throws IOException, InterruptedException {
+    private SerieOmdbDto getSerieData() throws IOException, InterruptedException {
         System.out.println("\nDigite o nome da série para busca");
         serieName = sc.nextLine();
         encodedName = URLEncoder.encode(serieName, StandardCharsets.UTF_8);
         var json = requestApi.getData(ENDERECO + encodedName + API_KEY);
-        toSeries = converter.getData(json, SerieDto.class);
+        toSeries = converter.getData(json, SerieOmdbDto.class);
         return toSeries;
     }
 		

@@ -3,7 +3,7 @@ package br.com.alura.exerciciosSpring.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-import br.com.alura.exerciciosSpring.dto.EpisodeDto;
+import br.com.alura.exerciciosSpring.dto.EpisodeOmdbDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +30,7 @@ public class EpisodeData {
     
     public EpisodeData() {}
     
-	public EpisodeData(EpisodeDto episodeDto, Integer season) {
+	public EpisodeData(EpisodeOmdbDto episodeDto, Integer season) {
 		
 		this.season = season;
 		this.title = episodeDto.titleEp();
