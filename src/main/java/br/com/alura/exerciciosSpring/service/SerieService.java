@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.alura.exerciciosSpring.dto.EpisodeResponseDTO;
 import br.com.alura.exerciciosSpring.dto.SerieResponseDTO;
+import br.com.alura.exerciciosSpring.model.Category;
 import br.com.alura.exerciciosSpring.model.SerieData;
 import br.com.alura.exerciciosSpring.repository.SerieRepository;
 
@@ -64,6 +65,11 @@ public class SerieService {
 				.stream()
 				.map(e -> new EpisodeResponseDTO(e.getSeason(), e.getEpisode(), e.getTitle()))
 				.collect(Collectors.toList());
+	}
+
+	public List<SerieResponseDTO> getSeriesByCategory(String categoryName) {
+		Category category = Category.fromPortuguese(categoryName);
+		return convertData(repository.findByGenre(category));
 	}
 
 }

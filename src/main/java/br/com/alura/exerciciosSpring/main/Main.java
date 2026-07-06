@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import br.com.alura.exerciciosSpring.dto.SerieOmdbDto;
 import br.com.alura.exerciciosSpring.model.Category;
 import br.com.alura.exerciciosSpring.model.EpisodeData;
@@ -25,7 +27,10 @@ public class Main {
 
 	private int option;
 	private final String ENDERECO = "https://www.omdbapi.com/?t=";
-	private final String API_KEY = "&apikey=2b22b79";
+	
+	@Value ("${api.key}")
+	private final String apiKey;
+	
 	private String encodedName;
 	private GetApi requestApi = new GetApi();
 	private ConvertData converter = new ConvertData();
@@ -45,8 +50,9 @@ public class Main {
 	
 	private SerieRepository repository;
 	
-	public Main(SerieRepository repository) {
+	public Main(SerieRepository repository, String apiKey) {
 		this.repository = repository;
+		this.apiKey = apiKey;
 	}
 
 
@@ -130,7 +136,7 @@ public class Main {
         System.out.println("\nDigite o nome da série para busca");
         serieName = sc.nextLine();
         encodedName = URLEncoder.encode(serieName, StandardCharsets.UTF_8);
-        var json = requestApi.getData(ENDERECO + encodedName + API_KEY);
+        var json = requestApi.getData(ENDERECO + encodedName + apiKey);
         toSeries = converter.getData(json, SerieOmdbDto.class);
         return toSeries;
     }
@@ -147,7 +153,7 @@ public class Main {
 			List<SeasonData> season =new ArrayList<>();
 			encodedName = URLEncoder.encode(seriesFounded.getTitle(), StandardCharsets.UTF_8);
 			for (int i = 1 ; i <= seriesFounded.getTotalSeasons() ; i++) {
-				var json = requestApi.getData(ENDERECO + encodedName + "&season=" + i + API_KEY);
+				var json = requestApi.getData(ENDERECO + encodedName + "&season=" + i + apiKey);
 				seasonData = converter.getData(json, SeasonData.class);
 				season.add(seasonData);
 						

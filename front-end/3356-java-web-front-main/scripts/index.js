@@ -42,7 +42,7 @@ const categoriaSelect = document.querySelector('[data-categorias]');
 const sectionsParaOcultar = document.querySelectorAll('.section'); // Adicione a classe CSS 'hide-when-filtered' às seções e títulos que deseja ocultar.
 
 categoriaSelect.addEventListener('change', function () {
-    const categoria = document.querySelector('[data-name="categoria"]');
+    const categoria = document.querySelector('[data-name="category"]');
     const categoriaSelecionada = categoriaSelect.value;
 
     if (categoriaSelecionada === 'todos') {
@@ -60,7 +60,7 @@ categoriaSelect.addEventListener('change', function () {
 
         categoria.classList.remove('hidden')
         // Faça uma solicitação para o endpoint com a categoria selecionada
-        getDados(`/series/categoria/${categoriaSelecionada}`)
+        getDados(`/series/category/${categoriaSelecionada}`)
             .then(data => {
                 criarListaFilmes(categoria, data);
             })
