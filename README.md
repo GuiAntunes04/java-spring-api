@@ -78,6 +78,7 @@ The application reads database credentials from environment variables (see `src/
 export DB_HOST=localhost:5432/series_db
 export DB_USER=your_postgres_user
 export DB_PASSWORD=your_postgres_password
+export API_KEY=your_omdb_key
 ```
 
 > Create the `series_db` database beforehand — Hibernate will create/update the tables automatically (`spring.jpa.hibernate.ddl-auto=update`).
